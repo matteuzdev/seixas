@@ -1,0 +1,1033 @@
+/* ================================================================
+   SEIXAS — Design System
+   Premium, clean, minimal. Inspired by Turmalina Paraíba.
+   ================================================================ */
+
+/* --- Tokens --- */
+:root {
+    --bg: #09090f;
+    --surface: #111119;
+    --surface-hover: #1a1a24;
+    --border: #1e1e2a;
+    --primary: #00d4aa;
+    --primary-dim: #00d4aa22;
+    --accent: #0088ff;
+    --recording: #ff3344;
+    --recording-dim: #ff334422;
+    --text: #e4e4ec;
+    --text-secondary: #6b6b80;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --radius-lg: 16px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --transition: 0.2s ease;
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- App Shell --- */
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* --- Top Bar --- */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 56px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.topbar__logo {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text);
+}
+
+.topbar__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.topbar__sources {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.source-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.source-select label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.source-btn,
+.source-dropdown {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+
+.source-btn:hover,
+.source-dropdown:hover {
+    border-color: var(--primary);
+}
+
+.source-dropdown {
+    max-width: 160px;
+}
+
+.source-dropdown option {
+    background: var(--surface);
+}
+
+/* --- Main Layout --- */
+.main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 240px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar__title {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.sidebar__section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    width: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.btn--record {
+    background: var(--primary);
+    color: #000;
+}
+
+.btn--record:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.btn--record.recording {
+    background: var(--recording);
+    color: #fff;
+    animation: pulse-record 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-record {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 var(--recording-dim);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px transparent;
+    }
+}
+
+.btn--secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+    border-color: var(--text-secondary);
+}
+
+.btn--danger {
+    background: var(--bg);
+    color: var(--recording);
+    border: 1px solid var(--border);
+}
+
+.btn--danger:hover:not(:disabled) {
+    border-color: var(--recording);
+}
+
+.btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn__icon {
+    font-size: 10px;
+}
+
+/* --- Timer --- */
+.timer {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    letter-spacing: 1px;
+}
+
+.timer.recording {
+    color: var(--recording);
+}
+
+/* --- Mask Grid --- */
+.mask-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.mask-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 7px 2px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--text-secondary);
+    font-size: 9px;
+    font-family: var(--font);
+    position: relative;
+}
+
+.mask-option:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.mask-option.active {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Elite masks: locked state */
+.mask-option--elite {
+    opacity: 0.7;
+}
+
+.mask-option--elite:hover {
+    opacity: 1;
+}
+
+.mask-preview {
+    width: 38px;
+    height: 38px;
+    background: var(--primary-dim);
+    border: 1.5px solid var(--primary);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mask-lock {
+    font-size: 14px;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+    border-radius: inherit;
+}
+
+.mask-preview--circle {
+    border-radius: 50%;
+}
+
+.mask-preview--squircle {
+    border-radius: 30%;
+}
+
+.mask-preview--hexagon {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: none;
+    background: var(--primary);
+    opacity: 0.3;
+}
+
+.mask-preview--blob {
+    border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+}
+
+.mask-preview--diamond {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    border: none;
+    background: var(--primary);
+    opacity: 0.3;
+}
+
+.mask-preview--none {
+    border-radius: var(--radius-sm);
+}
+
+/* Elite preview tiles */
+.mask-preview--wave {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00d4aa44, #0088ff44);
+}
+
+.mask-preview--fire {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff440044, #ff880044);
+}
+
+.mask-preview--electric {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8800ff44, #00d4aa44);
+}
+
+.mask-preview--galaxy {
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0011ff44, #ff00cc44);
+}
+
+.mask-preview--crystal {
+    border-radius: 30%;
+    background: linear-gradient(135deg, #aaddff44, #ffffff22);
+}
+
+.mask-preview--hud {
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, #00ff8844, #00d4aa44);
+}
+
+/* --- Toggle --- */
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.toggle input {
+    display: none;
+}
+
+.toggle__slider {
+    width: 32px;
+    height: 18px;
+    background: var(--border);
+    border-radius: 9px;
+    position: relative;
+    transition: background var(--transition);
+    flex-shrink: 0;
+}
+
+.toggle__slider::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    transition: all var(--transition);
+}
+
+.toggle input:checked+.toggle__slider {
+    background: var(--primary);
+}
+
+.toggle input:checked+.toggle__slider::after {
+    left: 16px;
+    background: #000;
+}
+
+/* --- Controls --- */
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.control-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    min-width: 62px;
+}
+
+.color-input {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-input::-webkit-color-swatch {
+    border: none;
+    border-radius: 3px;
+}
+
+.range-input {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+}
+
+.range-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.effect-status {
+    font-size: 10px;
+    color: var(--text-secondary);
+    min-height: 14px;
+    margin-top: -4px;
+    margin-bottom: 4px;
+}
+
+/* --- Preview Area --- */
+.preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    min-width: 0;
+}
+
+.preview__container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #000;
+    margin: 12px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+}
+
+.preview__screen {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: none;
+}
+
+.preview__screen.active {
+    display: block;
+}
+
+.preview__webcam {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+    z-index: 10;
+    /* Sombra sutil para destacar sobre qualquer fundo */
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+/* --- Placeholder --- */
+.preview__placeholder {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview__placeholder.hidden {
+    display: none;
+}
+
+.placeholder__icon {
+    font-size: 40px;
+    color: var(--text-secondary);
+    opacity: 0.3;
+}
+
+.placeholder__text {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.placeholder__hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+/* --- Status Bar --- */
+.statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.statusbar__text.recording {
+    color: var(--recording);
+}
+
+/* --- Scrollbar --- */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+}
+
+/* --- Design Premium: Branding refinado --- */
+.topbar__logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.topbar__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 6px var(--primary);
+    margin-left: 1px;
+}
+
+/* Divisória visual entre sections da sidebar */
+.sidebar__section+.sidebar__section {
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+/* Título da section mais elegante */
+.sidebar__title {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+/* Timer mais impactante quando gravando */
+.timer {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    letter-spacing: 2px;
+    font-feature-settings: "tnum";
+}
+
+.timer.recording {
+    color: var(--recording);
+    text-shadow: 0 0 20px var(--recording-dim);
+}
+
+/* Botão gravar com mais presença */
+.btn--record {
+    background: var(--primary);
+    color: #000;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Source btn com dot de status */
+.source-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.source-btn.has-source::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+}
+
+/* --- Modal de Pagamento Elite --- */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.modal.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+}
+
+.modal__card {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    transform: translateY(8px);
+    transition: transform 0.25s ease;
+}
+
+.modal.open .modal__card {
+    transform: translateY(0);
+}
+
+.modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+}
+
+.modal__close:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+}
+
+.modal__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: var(--primary-dim);
+    border: 1px solid #00d4aa33;
+    border-radius: 100px;
+    padding: 4px 10px;
+    margin-bottom: 14px;
+}
+
+.modal__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.modal__desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.modal__price {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.modal__cta {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #000;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition);
+    margin-bottom: 10px;
+}
+
+.modal__cta:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.modal__hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* --- Botão Área --- */
+.source-btn--crop {
+    margin-left: 2px;
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.source-btn--crop.has-crop {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* --- Webcam arrastável --- */
+#webcamCanvas {
+    cursor: grab;
+}
+
+#webcamCanvas:active {
+    cursor: grabbing;
+}
+
+/* --- Crop Overlay --- */
+.crop-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    cursor: crosshair;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.crop-overlay__hint {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid #00d4aa44;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 51;
+    backdrop-filter: blur(4px);
+}
+
+.crop-selection-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ═══════════════════════════════════════════════
+   ANNOTATION TOOLBAR (LOUSA)
+═══════════════════════════════════════════════ */
+.annotate-bar {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(10, 10, 20, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    padding: 6px 14px;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    user-select: none;
+}
+
+.annotate-bar__group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.annotate-bar__sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+/* Botões de ferramenta */
+.annotate-tool {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-family: var(--font);
+    font-weight: 600;
+}
+
+.annotate-tool:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text);
+}
+
+.annotate-tool.active {
+    background: var(--primary-dim);
+    color: var(--primary);
+    box-shadow: 0 0 0 1.5px var(--primary);
+}
+
+/* Tool: Laser ativo fica vermelho */
+.annotate-tool[data-tool="laser"].active {
+    background: rgba(255, 50, 50, 0.15);
+    color: #ff3344;
+    box-shadow: 0 0 0 1.5px #ff3344;
+}
+
+/* Dots de cor */
+.color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+
+.color-dot:hover {
+    transform: scale(1.2);
+}
+
+.color-dot.active {
+    border-color: #fff;
+    transform: scale(1.15);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* Range de espessura */
+.annotate-size {
+    width: 70px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    outline: none;
+}
+
+.annotate-size::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Botão limpar */
+.annotate-action {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.annotate-action:hover {
+    background: rgba(255, 51, 68, 0.15);
+    color: #ff3344;
+}
+
+/* ═══════════════════════════════════════════════
+   FLOATING CONTROLS (Lousa + Zoom)
+═══════════════════════════════════════════════ */
+.preview__floating-controls {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 30;
+    display: flex;
+    gap: 6px;
+}
+
+.floating-btn {
+    background: rgba(10, 10, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 100px;
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.floating-btn:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text);
+}
+
+.floating-btn.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-dim);
+}

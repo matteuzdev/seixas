@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seixas — Grave sua tela como um profissional</title>
+    <meta name="description"
+        content="Gravador de tela com IA, masks exclusivas, lousa interativa e edição automática. Feito para quem cria conteúdo a sério." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --primary: #00d4aa;
+            --primary-glow: rgba(0, 212, 170, 0.25);
+            --primary-dim: rgba(0, 212, 170, 0.08);
+            --bg: #080c14;
+            --bg2: #0d1420;
+            --bg3: #111827;
+            --surface: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f0f4ff;
+            --muted: #8899bb;
+            --danger: #ff4466;
+            --gold: #ffcc44;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ───────── NOISE TEXTURE ───────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ───────── NAV ───────── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 64px;
+            background: rgba(8, 12, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px var(--primary);
+                transform: scale(1);
+            }
+
+            50% {
+                box-shadow: 0 0 24px var(--primary);
+                transform: scale(1.2);
+            }
+        }
+
+        nav .links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color .2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        .btn-nav {
+            background: var(--primary);
+            color: #000 !important;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .btn-nav:hover {
+            background: #00ffcc;
+            transform: scale(1.04);
+            box-shadow: 0 0 24px var(--primary-glow);
+        }
+
+        /* ───────── HERO ───────── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px 60px;
+            overflow: hidden;
+        }
+
+        /* Orb de fundo */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-dim);
+            border: 1px solid rgba(0, 212, 170, 0.25);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 28px;
+            letter-spacing: .5px;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 80px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            max-width: 900px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--primary), #44ffcc, #00aaff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 560px;
+            line-height: 1.7;
+            margin-bottom: 44px;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 70px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #00aaff);
+            color: #000;
+            font-weight: 800;
+            font-size: 15px;
+            padding: 14px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 48px rgba(0, 212, 170, 0.45);
+        }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 15px;
+            padding: 14px 32px;
+            border-radius: 100px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            transition: all .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+        }
+
+        /* ── Screenshot do App ── */
+        .app-preview {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .app-preview-window {
+            background: var(--bg2);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(0, 212, 170, 0.1),
+                0 40px 80px rgba(0, 0, 0, 0.7),
+                0 0 120px rgba(0, 212, 170, 0.08);
+        }
+
+        .window-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-r {
+            background: #ff5f57;
+        }
+
+        .dot-y {
+            background: #febc2e;
+        }
+
+        .dot-g {
+            background: #28c840;
+        }
+
+        .window-title {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 0 auto;
+        }
+
+        .app-preview img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Glow embaixo da preview */
+        .preview-glow {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 60px;
+            background: var(--primary);
+            filter: blur(60px);
+            opacity: 0.15;
+        }
+
+        /* ───────── STATS ───────── */
+        .stats {
+            display: flex;
+            gap: 60px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 60px 20px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin: 80px 0 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), #44ffcc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* ───────── FEATURES ───────── */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 52px);
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: var(--muted);
+            font-size: 17px;
+            max-width: 560px;
+            margin: 0 auto 60px;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all .25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feat-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-dim), transparent);
+            opacity: 0;
+            transition: opacity .3s;
+        }
+
+        .feat-card:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feat-card:hover::before {
+            opacity: 1;
+        }
+
+        .feat-icon {
+            font-size: 36px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feat-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feat-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .feat-badge {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 100px;
+            border: 1px solid;
+        }
+
+        .feat-badge.new {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .feat-badge.pro {
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        /* ───────── COMO FUNCIONA ───────── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            counter-reset: step;
+        }
+
+        .step {
+            text-align: center;
+            padding: 24px;
+            position: relative;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: var(--primary-dim);
+            border: 1.5px solid rgba(0, 212, 170, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 0 auto 18px;
+        }
+
+        .step h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ───────── PRICING ───────── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .plan-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px 30px;
+            transition: all .25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plan-card.featured {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.07), var(--bg2));
+            box-shadow: 0 0 0 1px rgba(0, 212, 170, 0.1), 0 40px 80px rgba(0, 212, 170, 0.08);
+        }
+
+        .plan-card.featured::before {
+            content: 'MAIS POPULAR';
+            position: absolute;
+            top: 16px;
+            right: -28px;
+            transform: rotate(45deg);
+            background: var(--primary);
+            color: #000;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 4px 36px;
+        }
+
+        .plan-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .plan-card.featured .plan-name {
+            color: var(--primary);
+        }
+
+        .plan-price {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .plan-price sup {
+            font-size: 20px;
+            vertical-align: super;
+            font-weight: 700;
+        }
+
+        .plan-period {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .plan-features li:last-child {
+            border: none;
+        }
+
+        .plan-features li .check {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .plan-features li .cross {
+            color: var(--muted);
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-plan.outline {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-plan.outline:hover {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+        }
+
+        .btn-plan.solid {
+            background: linear-gradient(135deg, var(--primary), #00aaff);
+            color: #000;
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-plan.solid:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 36px rgba(0, 212, 170, 0.45);
+        }
+
+        .btn-plan.dark {
+            background: var(--bg3);
+            color: var(--text);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-plan.dark:hover {
+            border-color: var(--primary);
+        }
+
+        /* ── PIX Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg2);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp .3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .modal p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        #pixQrContainer {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        #pixQrContainer img {
+            width: 180px;
+            height: 180px;
+        }
+
+        #pixCode {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 11px;
+            color: var(--muted);
+            word-break: break-all;
+            cursor: pointer;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        #pixCode:hover {
+            border-color: var(--primary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+        }
+
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 40px 0;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: bounce 1.2s infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* ───────── FOOTER ───────── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: var(--primary);
+        }
+
+        /* ───────── RESPONSIVE ───────── */
+        @media (max-width: 640px) {
+            nav .links {
+                display: none;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">
+            <span>SEIXAS</span>
+            <div class="logo-dot"></div>
+        </div>
+        <div class="links">
+            <a href="#features">Recursos</a>
+            <a href="#how">Como Funciona</a>
+            <a href="#pricing">Planos</a>
+            <a href="index.html" class="btn-nav">Abrir App →</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="badge">🔴 Ao vivo — Grave sem dó</div>
+
+        <h1>Grave sua tela<br /><span>como um profissional.</span></h1>
+
+        <p class="hero-sub">
+            Gravador de tela com IA, lousa interativa, masks de câmera exclusivas e edição automática.
+            Feito para quem cria conteúdo a sério.
+        </p>
+
+        <div class="hero-cta">
+            <a href="index.html" class="btn-primary">🎬 Começar agora — Grátis</a>
+            <a href="#pricing" class="btn-ghost">Ver planos →</a>
+        </div>
+
+        <div class="app-preview">
+            <div class="app-preview-window">
+                <div class="window-bar">
+                    <div class="window-dot dot-r"></div>
+                    <div class="window-dot dot-y"></div>
+                    <div class="window-dot dot-g"></div>
+                    <span class="window-title">Seixas — Gravador de Tela</span>
+                </div>
+                <img src="../.gemini/antigravity/brain/41c20836-9307-4fa2-b3a7-b2e9ea491fd0/seixas_full_page_1772579278312.png"
+                    alt="Interface do Seixas" onerror="this.style.display='none'" />
+            </div>
+            <div class="preview-glow"></div>
+        </div>
+
+        <div class="stats" style="max-width:1000px; margin: 80px auto 0; width:100%;">
+            <div class="stat">
+                <span class="stat-num">0ms</span>
+                <div class="stat-label">Latência de Recording</div>
+            </div>
+            <div class="stat">
+                <span class="stat-num">9</span>
+                <div class="stat-label">Masks Exclusivas</div>
+            </div>
+            <div class="stat">
+                <span class="stat-num">4K</span>
+                <div class="stat-label">Qualidade de Saída</div>
+            </div>
+            <div class="stat">
+                <span class="stat-num">100%</span>
+                <div class="stat-label">No browser — sem instalar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-eyebrow">Ferramentas</div>
+        <h2 class="section-title">Tudo que você precisa <br />em um só lugar</h2>
+        <p class="section-sub">Do básico ao avançado. Sem precisar instalar nada.</p>
+
+        <div class="features-grid">
+            <div class="feat-card">
+                <span class="feat-icon">🎬</span>
+                <div class="feat-title">Gravação de Tela em Tempo Real</div>
+                <p class="feat-desc">Capture qualquer aba, janela ou tela inteira com qualidade até 4K. Zero instalação,
+                    direto no browser.</p>
+                <span class="feat-badge new">GRÁTIS</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">✏️</span>
+                <div class="feat-title">Lousa Interativa</div>
+                <p class="feat-desc">Escreva, desenhe e destaque em tempo real enquanto grava. Lápis, laser (com fade
+                    animado!), marcador, texto e borracha.</p>
+                <span class="feat-badge new">NOVO</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">🎭</span>
+                <div class="feat-title">Masks de Câmera Elite</div>
+                <p class="feat-desc">Deixe sua webcam com bordas exclusivas: Wave Glow, Fire Ring, Electric, Galaxy,
+                    Crystal e HUD. Identidade visual única.</p>
+                <span class="feat-badge pro">PRO</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">🔍</span>
+                <div class="feat-title">Lupa Inteligente</div>
+                <p class="feat-desc">Amplifique qualquer parte da tela com a lupa circular que segue o seu cursor.
+                    Perfeito para tutoriais e apresentações.</p>
+                <span class="feat-badge new">NOVO</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">✂️</span>
+                <div class="feat-title">Seleção de Área</div>
+                <p class="feat-desc">Escolha exatamente qual parte da tela capturar, como o oCam. Arraste para
+                    selecionar e grave só o que importa.</p>
+                <span class="feat-badge new">NOVO</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">🎙️</span>
+                <div class="feat-title">Redução de Ruído</div>
+                <p class="feat-desc">Filtro de áudio com Web Audio API integrado. Grave com microfone profissional Noise
+                    Gate automático.</p>
+                <span class="feat-badge new">GRÁTIS</span>
+            </div>
+            <div class="feat-card">
+                <span class="feat-icon">📸</span>
+                <div class="feat-title">Screenshot Instantâneo</div>
+                <p class="feat-desc">Capture um frame perfeito da sua tela (com webcam e anotações compostos) com um
+                    clique. Salva em PNG.</p>
+                <span class="feat-badge new">NOVO</span>
+            </div>
+            <div class="feat-card"
+                style="border-color:rgba(0,212,170,0.15); background: linear-gradient(135deg, rgba(0,212,170,0.06), var(--bg2));">
+                <span class="feat-icon">🤖</span>
+                <div class="feat-title">IA em Breve</div>
+                <p class="feat-desc">Remoção de silêncio, detecção de cacoetes, transcrição ao vivo, face-tracking e
+                    resumo automático com IA.</p>
+                <span class="feat-badge pro" style="color:var(--gold);">EM BREVE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section id="how" style="background: var(--bg2); padding: 80px 20px; max-width: 100%; margin: 0;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div class="section-eyebrow">Fluxo</div>
+            <h2 class="section-title">Simples assim</h2>
+            <p class="section-sub">Em 4 cliques você já está gravando.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h3>Selecione a Tela</h3>
+                    <p>Escolha qual janela, aba ou monitor capturar diretamente pelo browser.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h3>Configure a Câmera</h3>
+                    <p>Escolha sua webcam, aplique a mask, ative blur de fundo ou arraste-a para a posição.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h3>Grave (ou apresente)</h3>
+                    <p>Use a lousa, lupa, screenshots — tudo sem interromper a gravação.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h3>Baixe o vídeo</h3>
+                    <p>Download instantâneo em WebM de alta qualidade. Sem upload, sem espera.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+        <div class="section-eyebrow">Planos</div>
+        <h2 class="section-title">Invista, não desperdice.</h2>
+        <p class="section-sub">Comece grátis. Evolua quando precisar.</p>
+
+        <div class="pricing-grid">
+            <!-- Grátis -->
+            <div class="plan-card">
+                <div class="plan-name">Grátis</div>
+                <div class="plan-price">R$0</div>
+                <div class="plan-period">para sempre</div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> Gravação ilimitada</li>
+                    <li><span class="check">✓</span> Masks básicas (Círculo, Squircle, Hexágono)</li>
+                    <li><span class="check">✓</span> Lousa interativa</li>
+                    <li><span class="check">✓</span> Lupa de cursor</li>
+                    <li><span class="check">✓</span> Screenshot</li>
+                    <li><span class="check">✓</span> Redução de ruído</li>
+                    <li><span class="cross">✗</span> <span style="color:var(--muted)">Masks Elite (6 exclusivas)</span>
+                    </li>
+                    <li><span class="cross">✗</span> <span style="color:var(--muted)">IA (silêncio, cacoetes)</span>
+                    </li>
+                </ul>
+                <a href="index.html" class="btn-plan outline">Começar grátis</a>
+            </div>
+
+            <!-- Pro -->
+            <div class="plan-card featured">
+                <div class="plan-name">PRO</div>
+                <div class="plan-price"><sup>R$</sup>29<span style="font-size:24px">,90</span></div>
+                <div class="plan-period">por mask / acesso vitalício</div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> Tudo do Grátis</li>
+                    <li><span class="check">✓</span> <strong>1 Mask Elite</strong> (sua escolha)</li>
+                    <li><span class="check">✓</span> Wave Glow / Fire Ring / Electric</li>
+                    <li><span class="check">✓</span> Galaxy / Crystal / HUD</li>
+                    <li><span class="check">✓</span> Atualizações inclusas</li>
+                    <li><span class="check">✓</span> Pix ou Cartão</li>
+                </ul>
+                <button class="btn-plan solid" onclick="openCheckout('wave-glow')">
+                    💳 Pagar com Pix
+                </button>
+            </div>
+
+            <!-- Pack Completo -->
+            <div class="plan-card">
+                <div class="plan-name">PACK ELITE</div>
+                <div class="plan-price"><sup>R$</sup>99<span style="font-size:24px">,90</span></div>
+                <div class="plan-period">acesso vitalício — todas as masks</div>
+                <ul class="plan-features">
+                    <li><span class="check">✓</span> Todas as 6 Masks Elite</li>
+                    <li><span class="check">✓</span> Acesso antecipado às IAs</li>
+                    <li><span class="check">✓</span> Suporte prioritário</li>
+                    <li><span class="check">✓</span> Novas masks futuras inclusas</li>
+                    <li><span class="check">✓</span> Pix com QR Code</li>
+                    <li style="color:var(--primary)"><strong>💰 Economize R$79,50</strong></li>
+                </ul>
+                <button class="btn-plan solid" onclick="openCheckout('elite-pack')">
+                    🚀 Quero o Pack Completo
+                </button>
+            </div>
+        </div>
+
+        <p style="text-align:center; margin-top:36px; font-size:13px; color:var(--muted);">
+            🔒 Pagamento 100% seguro via AbacatePay · Pix instantâneo · Acesso liberado na hora
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo" style="justify-content:center; margin-bottom:16px;">
+            <span>SEIXAS</span>
+            <div class="logo-dot"></div>
+        </div>
+        <p>Feito com ☕ e muito <strong>Orion</strong> · 2026</p>
+        <p style="margin-top:8px;">
+            <a href="index.html" style="color:var(--primary); text-decoration:none;">Abrir o App</a>
+            &nbsp;·&nbsp;
+            <a href="mailto:contato@seixas.app" style="color:var(--muted); text-decoration:none;">Contato</a>
+        </p>
+    </footer>
+
+    <!-- MODAL PIX -->
+    <div class="modal-overlay" id="pixModal">
+        <div class="modal" style="position:relative;">
+            <button class="modal-close" onclick="closeModal()">×</button>
+
+            <div id="pixLoading">
+                <h3>Gerando seu Pix 🔄</h3>
+                <p>Criando cobrança no AbacatePay…</p>
+                <div class="loading-dots"><span></span><span></span><span></span></div>
+            </div>
+
+            <div id="pixSuccess" style="display:none">
+                <h3>Pix gerado! ✅</h3>
+                <p id="pixProductName" style="margin-bottom:16px;"></p>
+                <div id="pixQrContainer">
+                    <img id="pixQrImg" alt="QR Code Pix" />
+                </div>
+                <div id="pixCode" onclick="copyPix()" title="Clique para copiar">Carregando código Pix…</div>
+                <p style="font-size:12px; margin-bottom:16px;">Clique no código acima para copiar · Expira em 30 min</p>
+                <button class="btn-plan solid" onclick="copyPix()">📋 Copiar código Pix</button>
+            </div>
+
+            <div id="pixError" style="display:none">
+                <h3>Ops! ❌</h3>
+                <p id="pixErrorMsg">Erro ao gerar cobrança. Tente novamente.</p>
+                <button class="btn-plan outline" onclick="closeModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPixCode = '';
+
+        async function openCheckout(maskId) {
+            const modal = document.getElementById('pixModal');
+            const loading = document.getElementById('pixLoading');
+            const success = document.getElementById('pixSuccess');
+            const error = document.getElementById('pixError');
+
+            modal.classList.add('active');
+            loading.style.display = 'block';
+            success.style.display = 'none';
+            error.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/create-checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ maskId })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || data.error) throw new Error(data.error || 'Erro desconhecido');
+
+                loading.style.display = 'none';
+                success.style.display = 'block';
+
+                document.getElementById('pixProductName').textContent =
+                    `${data.product.name} · R$ ${(data.product.price / 100).toFixed(2).replace('.', ',')}`;
+
+                currentPixCode = data.pixCode || '';
+                document.getElementById('pixCode').textContent = currentPixCode || 'Código não disponível';
+
+                if (data.pixQrCode) {
+                    document.getElementById('pixQrImg').src = `data:image/png;base64,${data.pixQrCode}`;
+                } else if (data.checkoutUrl) {
+                    window.open(data.checkoutUrl, '_blank');
+                    closeModal();
+                }
+
+            } catch (err) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                document.getElementById('pixErrorMsg').textContent = err.message || 'Erro ao gerar cobrança.';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('pixModal').classList.remove('active');
+        }
+
+        function copyPix() {
+            if (!currentPixCode) return;
+            navigator.clipboard.writeText(currentPixCode).then(() => {
+                const btn = document.querySelector('#pixSuccess .btn-plan');
+                btn.textContent = '✅ Copiado!';
+                setTimeout(() => btn.textContent = '📋 Copiar código Pix', 2000);
+            });
+        }
+
+        // Fecha ao clicar fora do modal
+        document.getElementById('pixModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+
+</body>
+
+</html>

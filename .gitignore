@@ -1,0 +1,18 @@
+# Seixas — .gitignore
+# Nunca suba estes arquivos para o repositório
+
+# Secrets
+.env
+.env.local
+.env.production
+
+# Node
+node_modules/
+
+# Build
+dist/
+.netlify/
+
+# OS
+.DS_Store
+Thumbs.db

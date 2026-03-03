@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seixas — Screen Recording</title>
+    <meta name="description"
+        content="Seixas — Gravação de tela profissional com webcam e máscaras premium. Direto do browser, sem instalar nada.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- MediaPipe SelfieSegmentation para background blur -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="app" class="app">
+
+        <!-- ===== Top Bar ===== -->
+        <header class="topbar">
+            <div class="topbar__brand">
+                <span class="topbar__logo">SEIXAS</span>
+                <span class="topbar__dot"></span>
+            </div>
+            <div class="topbar__sources">
+                <div class="source-select">
+                    <label>Tela</label>
+                    <button id="btnSelectScreen" class="source-btn">Selecionar Tela</button>
+                    <button id="btnCropArea" class="source-btn source-btn--crop"
+                        title="Selecionar área da tela">&#x2702; Área</button>
+                </div>
+                <div class="source-select">
+                    <label>Câmera</label>
+                    <select id="cameraSource" class="source-dropdown"></select>
+                </div>
+                <div class="source-select">
+                    <label>Microfone</label>
+                    <select id="micSource" class="source-dropdown"></select>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== Main Content ===== -->
+        <main class="main">
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+
+                <!-- Controles -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Controles</h3>
+                    <button id="btnRecord" class="btn btn--record" disabled>
+                        <span class="btn__icon" aria-hidden="true">●</span>
+                        <span class="btn__label">Gravar</span>
+                    </button>
+                    <div class="btn-row">
+                        <button id="btnPause" class="btn btn--secondary" disabled>
+                            <span class="btn__label">Pausar</span>
+                        </button>
+                        <button id="btnStop" class="btn btn--danger" disabled>
+                            <span class="btn__label">Parar</span>
+                        </button>
+                    </div>
+                    <div id="timer" class="timer">00:00</div>
+                </section>
+
+                <!-- Máscaras -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Máscara da Câmera</h3>
+                    <div class="mask-grid" id="maskGrid">
+
+                        <!-- Free -->
+                        <button class="mask-option active" data-mask="circle" data-tier="free">
+                            <div class="mask-preview mask-preview--circle"></div>
+                            <span>Círculo</span>
+                        </button>
+                        <button class="mask-option" data-mask="squircle" data-tier="free">
+                            <div class="mask-preview mask-preview--squircle"></div>
+                            <span>Squircle</span>
+                        </button>
+
+                        <!-- Pro -->
+                        <button class="mask-option" data-mask="hexagon" data-tier="free">
+                            <div class="mask-preview mask-preview--hexagon"></div>
+                            <span>Hexágono</span>
+                        </button>
+                        <button class="mask-option" data-mask="blob" data-tier="free">
+                            <div class="mask-preview mask-preview--blob"></div>
+                            <span>Bolha</span>
+                        </button>
+                        <button class="mask-option" data-mask="diamond" data-tier="free">
+                            <div class="mask-preview mask-preview--diamond"></div>
+                            <span>Diamante</span>
+                        </button>
+                        <button class="mask-option" data-mask="none" data-tier="free">
+                            <div class="mask-preview mask-preview--none"></div>
+                            <span>Retângulo</span>
+                        </button>
+
+                        <!-- Elite (locked) -->
+                        <button class="mask-option mask-option--elite" data-mask="wave" data-tier="elite"
+                            data-price="R$ 9,90" data-label="Wave Glow">
+                            <div class="mask-preview mask-preview--wave">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>Wave Glow</span>
+                        </button>
+                        <button class="mask-option mask-option--elite" data-mask="fire" data-tier="elite"
+                            data-price="R$ 9,90" data-label="Fire Ring">
+                            <div class="mask-preview mask-preview--fire">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>Fire Ring</span>
+                        </button>
+                        <button class="mask-option mask-option--elite" data-mask="electric" data-tier="elite"
+                            data-price="R$ 14,90" data-label="Electric">
+                            <div class="mask-preview mask-preview--electric">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>Electric</span>
+                        </button>
+                        <button class="mask-option mask-option--elite" data-mask="galaxy" data-tier="elite"
+                            data-price="R$ 14,90" data-label="Galaxy Portal">
+                            <div class="mask-preview mask-preview--galaxy">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>Galaxy</span>
+                        </button>
+                        <button class="mask-option mask-option--elite" data-mask="crystal" data-tier="elite"
+                            data-price="R$ 19,90" data-label="Crystal Cut">
+                            <div class="mask-preview mask-preview--crystal">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>Crystal</span>
+                        </button>
+                        <button class="mask-option mask-option--elite" data-mask="hud" data-tier="elite"
+                            data-price="R$ 19,90" data-label="Streamer HUD">
+                            <div class="mask-preview mask-preview--hud">
+                                <span class="mask-lock">🔒</span>
+                            </div>
+                            <span>HUD</span>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Borda -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Borda</h3>
+                    <label class="toggle">
+                        <input type="checkbox" id="borderToggle" checked>
+                        <span class="toggle__slider"></span>
+                        <span class="toggle__label">Borda ativa</span>
+                    </label>
+                    <div class="control-row">
+                        <input type="color" id="borderColor" value="#00d4aa" class="color-input">
+                        <label for="borderColor" class="control-label">Cor</label>
+                    </div>
+                    <div class="control-row">
+                        <label class="control-label">Espessura</label>
+                        <input type="range" id="borderWidth" min="2" max="12" value="4" class="range-input">
+                    </div>
+                </section>
+
+                <!-- Efeitos de Vídeo -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Efeitos de Vídeo</h3>
+                    <label class="toggle">
+                        <input type="checkbox" id="bgBlurToggle">
+                        <span class="toggle__slider"></span>
+                        <span class="toggle__label">Blur de Fundo</span>
+                    </label>
+                    <div class="control-row" id="blurIntensityRow" style="display:none">
+                        <label class="control-label">Intensidade</label>
+                        <input type="range" id="blurIntensity" min="2" max="20" value="8" class="range-input">
+                    </div>
+                    <div id="bgBlurStatus" class="effect-status"></div>
+                </section>
+
+                <!-- Áudio -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Áudio</h3>
+                    <label class="toggle">
+                        <input type="checkbox" id="noiseToggle" checked>
+                        <span class="toggle__slider"></span>
+                        <span class="toggle__label">Filtro de Ruído</span>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox" id="webcamToggle" checked>
+                        <span class="toggle__slider"></span>
+                        <span class="toggle__label">Webcam ativa</span>
+                    </label>
+                </section>
+
+                <!-- Tamanho da Webcam -->
+                <section class="sidebar__section">
+                    <h3 class="sidebar__title">Webcam</h3>
+                    <div class="control-row">
+                        <label class="control-label">Tamanho</label>
+                        <input type="range" id="webcamSize" min="120" max="320" value="200" class="range-input">
+                    </div>
+                </section>
+
+            </aside>
+
+            <!-- Preview Area -->
+            <div class="preview">
+                <div class="preview__container" id="previewContainer">
+                    <video id="screenPreview" class="preview__screen" autoplay muted playsinline></video>
+                    <canvas id="webcamCanvas" class="preview__webcam"></canvas>
+                    <!-- Annotation Toolbar (lousa) -->
+                    <div class="annotate-bar" id="annotateBar" style="display:none">
+                        <!-- Ferramentas -->
+                        <div class="annotate-bar__group">
+                            <button class="annotate-tool active" data-tool="pen" title="Lápis">&#9998;</button>
+                            <button class="annotate-tool" data-tool="laser" title="Laser">&#11044;</button>
+                            <button class="annotate-tool" data-tool="highlight" title="Marcador">&#9744;</button>
+                            <button class="annotate-tool" data-tool="text" title="Texto">T</button>
+                            <button class="annotate-tool" data-tool="eraser" title="Borracha">&#9003;</button>
+                        </div>
+                        <div class="annotate-bar__sep"></div>
+                        <!-- Cores -->
+                        <div class="annotate-bar__group annotate-colors" id="annotateColors">
+                            <button class="color-dot active" data-color="#00d4aa" style="background:#00d4aa"
+                                title="Teal"></button>
+                            <button class="color-dot" data-color="#ff3344" style="background:#ff3344"
+                                title="Vermelho"></button>
+                            <button class="color-dot" data-color="#ffcc00" style="background:#ffcc00"
+                                title="Amarelo"></button>
+                            <button class="color-dot" data-color="#ffffff" style="background:#ffffff"
+                                title="Branco"></button>
+                            <button class="color-dot" data-color="#ff44cc" style="background:#ff44cc"
+                                title="Rosa"></button>
+                            <button class="color-dot" data-color="#44aaff" style="background:#44aaff"
+                                title="Azul"></button>
+                        </div>
+                        <div class="annotate-bar__sep"></div>
+                        <!-- Espessura -->
+                        <input type="range" id="annotateSize" min="2" max="16" value="4" class="annotate-size"
+                            title="Espessura">
+                        <div class="annotate-bar__sep"></div>
+                        <!-- Ações -->
+                        <button class="annotate-action" id="annotateClear" title="Limpar tudo">🗑</button>
+                    </div>
+
+                    <!-- Controles flutuantes sobre o preview -->
+                    <div class="preview__floating-controls">
+                        <button class="floating-btn" id="btnAnnotate" title="Ativar lousa">&#9998; Lousa</button>
+                        <button class="floating-btn" id="btnZoomToggle" title="Zoom no clique">&#128269; Zoom</button>
+                        <button class="floating-btn" id="btnScreenshot" title="Tirar screenshot">&#128247;</button>
+                    </div>
+                </div>
+
+                <div id="previewPlaceholder" class="preview__placeholder">
+                    <div class="placeholder__icon">⏺</div>
+                    <p class="placeholder__text">Selecione uma tela para começar</p>
+                    <p class="placeholder__hint">Clique em "Selecionar Tela" acima</p>
+                </div>
+            </div>
+            <div class="statusbar">
+                <span id="statusText" class="statusbar__text">Pronto</span>
+                <span id="statusQuality" class="statusbar__quality"></span>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Webcam feed: fora da viewport, NÃO display:none (bloqueia decodificação no Chrome) -->
+    <video id="webcamVideo"
+        style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none" autoplay
+        muted playsinline></video>
+    <!-- Canvas temporário para segmentação e blur -->
+    <canvas id="segCanvas" style="display:none"></canvas>
+
+    <!-- Modal das Máscaras Elite -->
+    <div id="eliteModal" class="modal" aria-hidden="true">
+        <div class="modal__backdrop" id="modalBackdrop"></div>
+        <div class="modal__card">
+            <button class="modal__close" id="modalClose" aria-label="Fechar">✕</button>
+            <div class="modal__badge">✦ Elite</div>
+            <h2 class="modal__title" id="modalMaskName">Wave Glow</h2>
+            <p class="modal__desc">Máscara premium com animação exclusiva. Destaque-se em qualquer reunião ou gravação.
+            </p>
+            <div class="modal__price" id="modalPrice">R$ 9,90</div>
+            <button class="modal__cta" id="modalCta">
+                Desbloquear Máscara
+            </button>
+            <p class="modal__hint">Compra única · Sem assinatura</p>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
