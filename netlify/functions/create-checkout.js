@@ -74,6 +74,15 @@ exports.handler = async (event) => {
                     quantity: 1,
                     price: product.price, // em centavos
                 }],
+                customer: null, // Como é pix dinâmico rápido o AbacatePay pode exigir customer
+                // Mas a V1 aceita customer vazio/null dependendo, se cair 500, criamos um dummy.
+                // Mas pelo erro "Customer not found", vamos passar dummy:
+                customer: {
+                    name: 'Cliente Vip Seixas',
+                    cellphone: '11999999999',
+                    email: 'cliente@seixas.app',
+                    taxId: '00000000000'
+                },
                 returnUrl: 'https://seixas.app/success',
                 completionUrl: 'https://seixas.app/success',
             }),

@@ -990,50 +990,43 @@
                 <div class="plan-price">R$0</div>
                 <div class="plan-period">para sempre</div>
                 <ul class="plan-features">
-                    <li><span class="check">✓</span> Gravação ilimitada</li>
-                    <li><span class="check">✓</span> Masks básicas (Círculo, Squircle, Hexágono)</li>
-                    <li><span class="check">✓</span> Lousa interativa</li>
-                    <li><span class="check">✓</span> Lupa de cursor</li>
-                    <li><span class="check">✓</span> Screenshot</li>
-                    <li><span class="check">✓</span> Redução de ruído</li>
-                    <li><span class="cross">✗</span> <span style="color:var(--muted)">Masks Elite (6 exclusivas)</span>
+                    <li><span class="check">✓</span> Gravação Full HD sem limite de tempo</li>
+                    <li><span class="check">✓</span> Masks de câmera essenciais (Círculo, Quadrado)</li>
+                    <li><span class="check">✓</span> Ferramenta de anotação na tela e zoom</li>
+                    <li><span class="check">✓</span> Redução de ruído (Microfone Limpo)</li>
+                    <li><span class="cross">✗</span> <span style="color:var(--muted)">Efeitos e Masks Premium</span>
                     </li>
-                    <li><span class="cross">✗</span> <span style="color:var(--muted)">IA (silêncio, cacoetes)</span>
-                    </li>
+                    <li><span class="cross">✗</span> <span style="color:var(--muted)">Suporte Prioritário</span></li>
                 </ul>
-                <a href="index.html" class="btn-plan outline">Começar grátis</a>
+                <a href="#" onclick="handleAppClick(event)" class="btn-plan outline">Começar agora</a>
             </div>
 
             <!-- Pro -->
             <div class="plan-card featured">
-                <div class="plan-name">PRO</div>
+                <div class="plan-name">PRO EXPRESS</div>
                 <div class="plan-price"><sup>R$</sup>29<span style="font-size:24px">,90</span></div>
-                <div class="plan-period">por mask / acesso vitalício</div>
+                <div class="plan-period">pagamento único / por mask</div>
                 <ul class="plan-features">
-                    <li><span class="check">✓</span> Tudo do Grátis</li>
-                    <li><span class="check">✓</span> <strong>1 Mask Elite</strong> (sua escolha)</li>
-                    <li><span class="check">✓</span> Wave Glow / Fire Ring / Electric</li>
-                    <li><span class="check">✓</span> Galaxy / Crystal / HUD</li>
-                    <li><span class="check">✓</span> Atualizações inclusas</li>
-                    <li><span class="check">✓</span> Pix ou Cartão</li>
+                    <li><span class="check">✓</span> TUDO do plano Grátis</li>
+                    <li><span class="check">✓</span> <strong>1 Máscara Premium</strong> vitalícia</li>
+                    <li><span class="check">✓</span> Efeitos visuais únicos (Glow, Neon, HUD)</li>
+                    <li><span class="check">✓</span> Chamará a atenção nos vídeos</li>
                 </ul>
                 <button class="btn-plan solid" onclick="openCheckout('wave-glow')">
-                    💳 Pagar com Pix
+                    Liberar uma Máscara
                 </button>
             </div>
 
             <!-- Pack Completo -->
             <div class="plan-card">
-                <div class="plan-name">PACK ELITE</div>
+                <div class="plan-name">PACK MASTER</div>
                 <div class="plan-price"><sup>R$</sup>99<span style="font-size:24px">,90</span></div>
-                <div class="plan-period">acesso vitalício — todas as masks</div>
+                <div class="plan-period">acesso vitalício — pacote completo</div>
                 <ul class="plan-features">
-                    <li><span class="check">✓</span> Todas as 6 Masks Elite</li>
-                    <li><span class="check">✓</span> Acesso antecipado às IAs</li>
-                    <li><span class="check">✓</span> Suporte prioritário</li>
-                    <li><span class="check">✓</span> Novas masks futuras inclusas</li>
-                    <li><span class="check">✓</span> Pix com QR Code</li>
-                    <li style="color:var(--primary)"><strong>💰 Economize R$79,50</strong></li>
+                    <li><span class="check">✓</span> <strong>Todas as 6 Máscaras Premium</strong> inclusas</li>
+                    <li><span class="check">✓</span> Máscaras futuras garantidas sem custo extra</li>
+                    <li><span class="check">✓</span> Suporte premium direto via WhatsApp</li>
+                    <li style="color:var(--primary)"><strong>💰 Mais de 40% de desconto</strong></li>
                 </ul>
                 <button class="btn-plan solid" onclick="openCheckout('elite-pack')">
                     🚀 Quero o Pack Completo
@@ -1042,7 +1035,7 @@
         </div>
 
         <p style="text-align:center; margin-top:36px; font-size:13px; color:var(--muted);">
-            🔒 Pagamento 100% seguro via AbacatePay · Pix instantâneo · Acesso liberado na hora
+            💳 Pagamento disponível via Cartão de Crédito e Pix (Liberação Imediata)
         </p>
     </section>
 
@@ -1159,12 +1152,8 @@
         // ── Auth Flow: Netlify Identity ──
         function handleAppClick(e) {
             e.preventDefault();
-            const user = netlifyIdentity.currentUser();
-            if (user) {
-                window.location.href = 'app.html';
-            } else {
-                netlifyIdentity.open('login');
-            }
+            // BYPASS TEMPORÁRIO = Vai direto pro app.html sem checar login
+            window.location.href = 'app.html';
         }
 
         // Redireciona ao logar
@@ -1174,9 +1163,10 @@
         });
 
         // Se veio do app.html sem estar logado
-        if (window.location.search.includes('login=1')) {
-            setTimeout(() => netlifyIdentity.open('login'), 500);
-        }
+        // (desativado temporariamente junto com o bypass)
+        // if (window.location.search.includes('login=1')) {
+        //     setTimeout(() => netlifyIdentity.open('login'), 500);
+        // }
     </script>
 
 </body>

@@ -23,10 +23,10 @@
     <script>
         (function () {
             const user = netlifyIdentity.currentUser();
-            if (!user) {
-                // Não logado: redireciona para landing com param de login
-                window.location.replace('/?login=1');
-            }
+            // BYPASS temporário a pedido do usuário
+            // if (!user) {
+            //     window.location.replace('/?login=1');
+            // }
         })();
     </script>
     <div id="app" class="app">
