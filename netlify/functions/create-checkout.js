@@ -74,7 +74,11 @@ exports.handler = async (event) => {
                     quantity: 1,
                     price: product.price, // em centavos
                 }],
-                customer: null, // Removendo o taxId (causava 400 Bad Request) e deixando envio sem cliente pré-cadastrado. O AbacatePay V1 permite checkout direto se não enviar customer (ou enviando null).
+                customer: {
+                    name: 'Cliente Vip Seixas',
+                    cellphone: '11999999999',
+                    email: 'cliente@seixas.app'
+                },
                 returnUrl: 'https://seixas.app/success',
                 completionUrl: 'https://seixas.app/success',
             }),
