@@ -85,6 +85,8 @@ let webcamEnabled = true;
 let webcamSize = 200;
 let noiseEnabled = true;
 let blurReady = false;
+let blurEnabled = false;
+let blurRadius = 10;
 
 // ──────────────────────────────────────────────
 // Init
@@ -369,7 +371,8 @@ function bindEvents() {
     // ── Blur de fundo
     bgBlurToggle.addEventListener('change', async () => {
         const enabled = bgBlurToggle.checked;
-        setBlurEnabled(enabled);
+        blurEnabled = enabled; // Atualizando state local do app
+        setBlurEnabled(enabled); // Repassando para o bg-blur.js
         blurIntensityRow.style.display = enabled ? 'flex' : 'none';
         if (enabled) {
             bgBlurStatus.textContent = 'Carregando modelo...';
@@ -382,7 +385,8 @@ function bindEvents() {
     });
 
     blurIntensity.addEventListener('input', () => {
-        setBlurRadius(parseInt(blurIntensity.value));
+        blurRadius = parseInt(blurIntensity.value) || 10; // Atualizando state local
+        setBlurRadius(parseInt(blurIntensity.value) || 10);
     });
 
     // ── Noise reduction
