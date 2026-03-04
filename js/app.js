@@ -35,6 +35,7 @@ import {
 } from './annotate.js';
 import { initMagnifier, setMagnifierEnabled } from './zoom.js';
 import { takeScreenshot } from './screenshot.js';
+import { MASKS } from './masks.js';
 
 // ──────────────────────────────────────────────
 // DOM
@@ -115,8 +116,7 @@ async function init() {
                 webcamVideo,
                 webcamCanvas,
                 () => {
-                    const { MASKS } = window.__seixasMasks || {};
-                    return MASKS ? MASKS[getCurrentMask()] : null;
+                    return MASKS[getCurrentMask()] || MASKS.circle;
                 },
                 () => getBorderOptions()
             );

@@ -159,6 +159,7 @@ export function resumeRecording() {
     }
 }
 
+
 /**
  * Para a gravação e retorna uma Promise com o Blob do vídeo.
  * @returns {Promise<Blob>}
