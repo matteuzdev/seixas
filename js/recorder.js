@@ -32,6 +32,10 @@ export function createRecording(screenStream, webcamCanvas, micStream, opts = {}
     const crop = opts.cropRegion || null;
     const getWebcamPos = opts.getWebcamPos || (() => ({ posX: 1, posY: 1 }));
     const annotationCanvas = opts.annotationCanvas || null;
+    const laserCanvas = opts.laserCanvas || null;
+    const lensCanvas = opts.lensCanvas || null;
+    const getLensPos = opts.getLensPos || null;
+    const zoomContainer = opts.zoomContainer || null;
 
     // Composite loop — executa apenas quando o vídeo tem dimensões reais
     function composite() {
@@ -75,8 +79,27 @@ export function createRecording(screenStream, webcamCanvas, micStream, opts = {}
         }
 
         // Anotações (lousa) — desenhadas por cima de tudo
+        // A resolução sw2/sh2 precisa esticar o dom content que tinha tamanho do Container
         if (annotationCanvas && annotationCanvas.width > 0) {
             compositeCtx.drawImage(annotationCanvas, 0, 0, sw2, sh2);
+        }
+
+        // Laser (lousa apagável)
+        if (laserCanvas && laserCanvas.width > 0) {
+            compositeCtx.drawImage(laserCanvas, 0, 0, sw2, sh2);
+        }
+
+        // Lupa (Zoom magnifier css-based rendering manual)
+        if (lensCanvas && lensCanvas.style.display !== 'none' && getLensPos && zoomContainer) {
+            const { x, y } = getLensPos();
+            const lw = lensCanvas.width;
+            const lh = lensCanvas.height;
+            // A posição x/y está em relação ao zoomContainer (DOM), convertendo para matriz do gravador (sw2/sh2)
+            const cw = zoomContainer.clientWidth;
+            const ch = zoomContainer.clientHeight;
+            const rx = (x / cw) * sw2 - (lw / 2);
+            const ry = (y / ch) * sh2 - (lh / 2);
+            compositeCtx.drawImage(lensCanvas, rx, ry, lw, lh);
         }
 
         compositeAnimId = requestAnimationFrame(composite);
@@ -199,12 +222,13 @@ export function getRecorderState() {
  * Detecta o melhor mimeType suportado pelo browser.
  */
 function getSupportedMimeType() {
-    // Chrome/Edge suportam WebM nativamente
-    // MP4/H264 via MediaRecorder NÃO funciona no Chrome — retorna WebM mesmo assim
+    // Priorizando video/mp4 e h264 para evitar gravação .webm com áudio OPUS
+    // que quebra frequentemente em players no Windows/Mac.
     const types = [
-        'video/webm;codecs=vp9,opus',
-        'video/webm;codecs=vp8,opus',
-        'video/webm;codecs=h264',
+        'video/mp4;codecs=avc1,mp4a.40.2',
+        'video/mp4',
+        'video/webm;codecs=h264', // H264 permite forçar download como mp4 para conversões fáceis
+        'video/webm;codecs=vp8',
         'video/webm',
     ];
     for (const type of types) {
@@ -218,9 +242,9 @@ function getSupportedMimeType() {
  * @param {Blob} blob
  */
 export function downloadRecording(blob) {
-    // Usa extensão correta baseada no tipo real do blob
-    const isWebM = blob.type.includes('webm');
-    const ext = isWebM ? 'webm' : 'mp4';
+    // Se o mimetype usa h264, no Chrome a gente salva como mp4 para ampla compatibilidade (mesmo sendo webm container às vezes)
+    const isMp4Capable = blob.type.includes('mp4') || blob.type.includes('h264');
+    const ext = isMp4Capable ? 'mp4' : 'webm';
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
     const filename = `seixas-${timestamp}.${ext}`;
 

@@ -31,9 +31,9 @@ import { initDrag, getWebcamPosition } from './drag.js';
 import { startAreaSelection, getCropRegion, resetCrop } from './crop.js';
 import {
     initAnnotations, setAnnotationsEnabled, setTool, setColor, setSize,
-    clearAnnotations, bindDrawingEvents, getDrawCanvas
+    clearAnnotations, bindDrawingEvents, getDrawCanvas, getLaserCanvas
 } from './annotate.js';
-import { initMagnifier, setMagnifierEnabled } from './zoom.js';
+import { initMagnifier, setMagnifierEnabled, getLensCanvas, getLensPos, getZoomContainer } from './zoom.js';
 import { takeScreenshot } from './screenshot.js';
 import { MASKS } from './masks.js';
 
@@ -218,7 +218,11 @@ function bindEvents() {
             webcamSize,
             cropRegion: getCropRegion(),
             getWebcamPos: getWebcamPosition,
-            annotationCanvas: getDrawCanvas()
+            annotationCanvas: getDrawCanvas(),
+            laserCanvas: getLaserCanvas(),
+            lensCanvas: getLensCanvas(),
+            getLensPos: getLensPos,
+            zoomContainer: getZoomContainer()
         });
         if (!recorder) return;
 

@@ -159,3 +159,8 @@ export function setMagnifierEnabled(active) {
 }
 
 export function isMagnifierEnabled() { return enabled; }
+
+// Expondo as propriedades para o recorder capturar e gravar
+export function getLensCanvas() { return lensEl; }
+export function getLensPos() { return { x: mouseX, y: mouseY }; }
+export function getZoomContainer() { return containerEl; }
