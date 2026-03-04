@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Seixas — Grave sua tela como um profissional</title>
     <meta name="description"
         content="Gravador de tela com IA, masks exclusivas, lousa interativa e edição automática. Feito para quem cria conteúdo a sério." />
@@ -844,7 +847,16 @@
             <a href="#pricing" class="btn-ghost">Ver planos →</a>
         </div>
 
-        <div class="app-preview">
+        <a href="app.html" onclick="handleAppClick(event)" class="app-preview"
+            style="display:block; text-decoration:none; position:relative;">
+            <div style="position:absolute; inset:0; z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(8,12,20,0.7); opacity:0; transition:opacity 0.3s; border-radius:20px;"
+                onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'">
+                <span
+                    style="background:var(--primary); color:#000; padding:12px 24px; font-weight:800; border-radius:100px; font-size:18px;">▶️
+                    CLIQUE P/ ABRIR O GRAVADOR</span>
+                <span style="color:#fff; margin-top:12px; font-size:14px; opacity:0.8;">(Isso é apenas uma demonstração
+                    visual)</span>
+            </div>
             <div class="app-preview-window">
                 <div class="window-bar">
                     <div class="window-dot dot-r"></div>
@@ -856,7 +868,7 @@
                     alt="Interface do Seixas" onerror="this.style.display='none'" />
             </div>
             <div class="preview-glow"></div>
-        </div>
+        </a>
 
         <div class="stats" style="max-width:1000px; margin: 80px auto 0; width:100%;">
             <div class="stat">
